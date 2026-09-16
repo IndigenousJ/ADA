@@ -25,6 +25,23 @@ This page itself is built to meet WCAG 2.2 AAA: 7:1 text contrast, 44px targets,
 Static checks only — always confirm with axe DevTools, keyboard-only pass,
 400% zoom / 320px width, and NVDA + JAWS + VoiceOver.
 
+## Advertising
+This page loads Google AdSense (`ca-pub-8636009779644671`). AdSense sets cookies and
+serves ads from a third party, so **ads are not covered by the AAA claim above** and are
+not checked by this tool. Google's policy: https://policies.google.com/technologies/ads
+
+`ads.txt` at the repo root authorises this publisher ID. To place an ad unit, create one
+in AdSense, then add a labelled region so screen reader users can skip it:
+
+```html
+<aside role="complementary" aria-label="Advertisement">
+  <ins class="adsbygoogle" style="display:block"
+       data-ad-client="ca-pub-8636009779644671" data-ad-slot="YOUR_SLOT_ID"
+       data-ad-format="auto" data-fullwidthresponsive="true"></ins>
+  <script>(adsbygoogle = window.adsbygoogle || []).push({});</script>
+</aside>
+```
+
 ## Run locally
 Just open `index.html` in a browser. No build, no server. Bootstrap via CDN.
 
