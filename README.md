@@ -1,4 +1,4 @@
-# ADA Auditor ΓÇö Free WCAG 2.2 AAA Checker
+# ADA Auditor  Free WCAG 2.2 AAA Checker
 
 Paste a URL or HTML source. Get 40 static findings for WCAG 2.2 A, AA and AAA with plain-language fixes.
 
