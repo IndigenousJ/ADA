@@ -45,10 +45,12 @@ body[data-theme="contrast-black"] header,body[data-theme="contrast-black"] foote
 body[data-theme="contrast-black"] .card,body[data-theme="contrast-black"] .border,body[data-theme="contrast-black"] details{background:#000!important;color:#ffe600!important;border-color:#ffe600!important}
 body[data-theme="contrast-black"] a,body[data-theme="contrast-black"] code{color:#ffe600!important;background:#000!important}
 body[data-theme="pale-yellow"]{background:#ffffe0!important;color:#0a1930!important}
-/* Bootstrap gradient hero: white on #0b3d91 = 8.6:1, AAA safe */
-header.text-white,header.text-white p,header.text-white h1{color:#fff!important}
-header.text-white .text-secondary,header.text-white .form-text{color:#e2e8f0!important}
-header.text-white a{color:#ffe600!important}
-header.text-white select,header.text-white .breadcrumb-item,header.text-white .breadcrumb-item span{color:#0a1930}
-header.text-white .form-select{background-color:#fff}
-header.text-white .breadcrumb-item+.breadcrumb-item::before{color:#e2e8f0}
+/* Slate-tint header (#f1f5f9 to #e2e8f0), ink #0a1930 ~14:1 AAA.
+   Fixes black breadcrumb on the dark blue header (1.4.11/2.4.12) and makes
+   the --focus ring (#0b3d91) readable: 8.2:1 on slate (was 1:1 on #0b3d91). */
+header h1,header p,header .small,header .breadcrumb-item{color:var(--ink)!important}
+header .text-secondary,header .form-text{color:var(--muted)!important}
+header a{color:var(--link)!important}
+header select,header .form-select{background:#fff;color:var(--ink)!important;border-color:var(--ink)}
+header .breadcrumb-item+.breadcrumb-item::before{color:var(--ink)!important}
+header{border-bottom:4px solid var(--focus)!important}
