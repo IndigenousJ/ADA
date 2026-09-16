@@ -17,7 +17,7 @@ function passLvl(f){var want=getLevel();return rank(f.level)>=rank(want);}
 function markDirty(){if(lastReport){$("btnApply").disabled=false;say("Filters changed. Choose Apply filters to update results.");}}
 function setStep(n){[["step1",1],["step2",2],["step3",3]].forEach(function(p){var el=$(p[0]);if(!el)return;if(p[1]===n){el.setAttribute("aria-current","step");el.classList.add("fw-bold");}else{el.removeAttribute("aria-current");el.classList.remove("fw-bold");}});}
 try{var savedTheme=localStorage.getItem("ada-theme");if(savedTheme){document.body.setAttribute("data-theme",savedTheme);}var ts=$("themeSelect");if(ts&&savedTheme)ts.value=savedTheme;}catch(e){}
-$("themeSelect").addEventListener("change",function(){var v=this.value;if(v==="default"){document.body.removeAttribute("data-theme");}else{document.body.setAttribute("data-theme",v);}try{localStorage.setItem("ada-theme",v);}catch(e){}say("Appearance set.");});
+var ts=$("themeSelect");if(ts){ts.addEventListener("change",function(){var v=ts.value;if(v==="default"){document.body.removeAttribute("data-theme");}else{document.body.setAttribute("data-theme",v);}try{localStorage.setItem("ada-theme",v);}catch(e){}say("Appearance set.");});}
 function findAll(re,src){var out=[],m;re=new RegExp(re.source,re.flags.indexOf("g")>-1?re.flags:re.flags+"g");while((m=re.exec(src))){out.push(m[0]);if(out.length>=8)break;}return out;}
 function audit(html){
 var doc;try{doc=new DOMParser().parseFromString(html,"text/html");}catch(e){doc=null;}
