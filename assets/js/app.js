@@ -112,7 +112,7 @@ var vidEls=doc?doc.querySelectorAll("video"):[];var badVid=0,evVid=[];
 Array.prototype.forEach.call(vidEls,function(v){if(!v.querySelector("track[kind=captions]")){badVid++;if(evVid.length<6)evVid.push(esc(v.outerHTML.slice(0,140)));}});
 push("video-captions","Videos have captions","1.2.2","A","P1",badVid===0,badVid,evVid,"Add a track kind=captions for spoken content.");
 var ahEls=doc?doc.querySelectorAll('[aria-hidden="true"]'):[];var badAh=0,evAh=[];
-Array.prototype.forEach.call(ahEls,function(el){var f=el.querySelectorAll("a[href],button,input,select,textarea,[tabindex]");if(f.length){badAh+=f.length;if(evAh.length<6)evAh.push(esc(f[0].outerHTML.slice(0,140)));}});
+Array.prototype.forEach.call(ahEls,function(el){var f=el.querySelectorAll("a[href],button,input,select,textarea,[tabindex]");var vis=Array.prototype.filter.call(f,function(c){return !c.closest("[hidden],.d-none,.modal:not(.show),.offcanvas:not(.show),.collapse:not(.show)");});if(vis.length){badAh+=vis.length;if(evAh.length<6)evAh.push(esc(vis[0].outerHTML.slice(0,140)));}});
 push("aria-hidden-focus","No focusable content in aria-hidden","1.3.1","A","P1",badAh===0,badAh,evAh,"Remove aria-hidden from containers with focusable controls, or move the controls out.");
 return F;}
 function render(F){
