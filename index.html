@@ -116,6 +116,19 @@
 <li>Always confirm with axe DevTools, a keyboard-only pass, 400 percent zoom and 320 pixel width, and <abbr title="NonVisual Desktop Access">NVDA</abbr>, <abbr title="Job Access With Speech">JAWS</abbr>, and VoiceOver.</li>
 </ul>
 </section>
+<section aria-labelledby="hSeo" class="mt-4">
+<h2 id="hSeo" class="h4">How to check your site for ADA and WCAG 2.2 compliance</h2>
+<p class="text-secondary">Three steps, about two minutes per page. It works for ADA (Titles II and III), Section 508, and the European Accessibility Act, because they all reference WCAG.</p>
+<ol class="text-secondary">
+<li>Open View Source on the page (Ctrl+U), copy everything, and paste it above. Or let the tool fetch a URL that allows it.</li>
+<li>Run the audit. Every finding shows the exact WCAG number, the level, and a plain-language fix.</li>
+<li>Fix P0 blockers first, then P1, then P2. Re-run until the report is clean.</li>
+</ol>
+<h3 class="h6 mt-3">Frequently asked questions</h3>
+<details><summary>Is this a full ADA compliance audit?</summary><p class="mb-1">No. Static checks find a subset of issues. The report tells you which items need a person: contrast, keyboard use, media, and more.</p></details>
+<details><summary>Does my page content leave my browser?</summary><p class="mb-1">No. Audits run in your browser. Nothing is uploaded.</p></details>
+<details><summary>Is it really free?</summary><p class="mb-1">Yes. No signup, no account, no cost. Donations are optional.</p></details>
+</section>
 <section aria-labelledby="hShare" class="mt-4">
 <h2 id="hShare" class="h4"><i class="bi bi-share-fill me-2" aria-hidden="true"></i>Share this free checker</h2>
 <p class="text-secondary">Help others find accessibility bugs early. The share buttons below are plain links and add no trackers of their own.</p>
@@ -149,7 +162,7 @@
 </details>
 </section>
 </main>
-<footer class="border-top py-3"><div class="container small text-secondary">ADA Auditor runs 100% in your browser. Not legal advice. This page is designed to meet WCAG 2.2 AAA; verify with axe plus manual testing. <a href="#hHelp">Glossary and help</a>.</div></footer>
+<footer class="border-top py-3"><div class="container small text-secondary">ADA Auditor runs 100% in your browser. Not legal advice. This page is designed to meet WCAG 2.2 AAA; verify with axe plus manual testing. <a href="#hHelp">Glossary and help</a> · <a href="privacy.html">Privacy</a></div></footer>
 <div class="modal fade" id="confirmModal" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="confirmTitle" aria-hidden="true">
 <div class="modal-dialog modal-dialog-centered"><div class="modal-content">
 <div class="modal-header"><h2 class="modal-title fs-5" id="confirmTitle">Please confirm</h2>

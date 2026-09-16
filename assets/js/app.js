@@ -127,7 +127,7 @@ var rows=(showP?list:fails).map(function(f){return "<tr><td><strong>"+esc(f.titl
 $("resBody").innerHTML=rows||'<tr><td colspan="6">No rows for current filters.</td></tr>';
 var det=fails.map(function(f){return "<details><summary><span class='badge text-bg-danger'>FAIL</span> "+esc(f.title)+" <code>"+f.sc+"</code> <span class='badge text-bg-secondary'>"+f.level+"</span> <span class='badge text-bg-dark'>"+f.sev+"</span></summary><p class=mb-1><strong>Fix:</strong> "+esc(f.fix)+"</p>"+(f.ev.length?"<div class=evidence>"+f.ev.map(esc).join("\n")+"</div>":"")+"</details>";}).join("");
 $("detailList").innerHTML=det||"<p>No failures for current filters.</p>";
-var L="ADA Auditor report â€” "+new Date().toISOString()+"\nChecks: "+list.length+" Failed: "+fails.length+" P0: "+p0+"\n\n";
+var L="ADA Auditor report â€” "+new Date().toISOString()+"\nChecks: "+list.length+" Failed: "+fails.length+" P0: "+p0+"\n\nTool: https://indigenousj.github.io/ADA/\n\n";
 fails.forEach(function(f){L+="FAIL ["+f.level+"/"+f.sev+"] "+f.title+" (WCAG "+f.sc+") count="+f.count+"\n Fix: "+f.fix+"\n "+(f.ev.slice(0,4).join(" | ")||"")+"\n\n";});
 lastReport=L;
 $("btnCopy").disabled=!fails.length;$("btnDownload").disabled=!fails.length;
@@ -146,8 +146,17 @@ function currentHTML(){return $("htmlInput").value;}
 $("btnRun").addEventListener("click",function(){
 clearErr();
 if(activeTab()==="url"){var u=$("urlInput").value.trim();if(!u){showErr("Enter a URL or switch to Paste HTML.");return;}
+if(!/^https?:\/\//i.test(u))u="https://"+u;$("urlInput").value=u;
+var uok=true;try{new URL(u);}catch(e){uok=false;}if(!uok){showErr("That does not look like a web address. Example: https://example.com/page");return;}
 say("Fetching "+u+" ...");
-fetch(u,{mode:"cors"}).then(function(r){if(!r.ok)throw new Error("HTTP "+r.status);return r.text();}).then(function(t){$("htmlInput").value=t;setTab("html");render(audit(t));}).catch(function(e){showErr("Fetch blocked ("+e.message+"). Use View Source + Paste HTML.");say("Fetch failed.");});
+fetch(u,{mode:"cors"}).then(function(r){
+if(r.status===404)throw new Error("page not found (404). Check the address for typos. If this is your own GitHub Pages site, it may still be building - try again in a minute.");
+if(r.status===403)throw new Error("forbidden (403). The page may need a login.");
+if(r.status>=500)throw new Error("server error ("+r.status+"). Try again later.");
+if(!r.ok)throw new Error("HTTP "+r.status+".");
+return r.text();}).then(function(t){$("htmlInput").value=t;setTab("html");say("Fetched "+Math.round(t.length/1024)+" KB.");render(audit(t));}).catch(function(e){var m=String(e&&e.message||e);
+if(m.indexOf("Failed to fetch")>-1||m.indexOf("NetworkError")>-1){showErr("Fetch blocked by CORS or network ("+u+"). View Source (Ctrl+U), copy, and use Paste HTML.");say("Fetch blocked.");}
+else{showErr("Fetch failed: "+m+" Tip: View Source (Ctrl+U), copy, and use Paste HTML.");say("Fetch failed.");}});
 return;}
 var h=currentHTML();if(!h.trim()){showErr("Paste HTML first.");return;}
 render(audit(h));});
