@@ -45,9 +45,10 @@ body[data-theme="contrast-black"] header,body[data-theme="contrast-black"] foote
 body[data-theme="contrast-black"] .card,body[data-theme="contrast-black"] .border,body[data-theme="contrast-black"] details{background:#000!important;color:#ffe600!important;border-color:#ffe600!important}
 body[data-theme="contrast-black"] a,body[data-theme="contrast-black"] code{color:#ffe600!important;background:#000!important}
 body[data-theme="pale-yellow"]{background:#ffffe0!important;color:#0a1930!important}
-/* Tailwind accent layer: gradient header keeps AAA text (white on #0b3d91 = 8.6:1) */
-header.tw-text-white,header.tw-text-white p,header.tw-text-white h1{color:#fff!important}
-header.tw-text-white .text-secondary,header.tw-text-white .form-text{color:#e2e8f0!important}
-header.tw-text-white a{color:#ffe600!important}
-header.tw-text-white select,header.tw-text-white .breadcrumb-item,header.tw-text-white .breadcrumb-item span{color:#0a1930}
-header.tw-text-white .form-select{background-color:#fff}
+/* Bootstrap gradient hero: white on #0b3d91 = 8.6:1, AAA safe */
+header.text-white,header.text-white p,header.text-white h1{color:#fff!important}
+header.text-white .text-secondary,header.text-white .form-text{color:#e2e8f0!important}
+header.text-white a{color:#ffe600!important}
+header.text-white select,header.text-white .breadcrumb-item,header.text-white .breadcrumb-item span{color:#0a1930}
+header.text-white .form-select{background-color:#fff}
+header.text-white .breadcrumb-item+.breadcrumb-item::before{color:#e2e8f0}
