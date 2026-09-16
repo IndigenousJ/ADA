@@ -113,6 +113,7 @@ var doClear=function(){var saved=$("htmlInput").value;$("htmlInput").value="";$(
 askConfirm("Clear all input and results?","This removes your pasted HTML, URL, and results. You can undo right after.","Yes, clear all",doClear);});
 $("btnCopy").addEventListener("click",function(){if(navigator.clipboard){navigator.clipboard.writeText(lastReport).then(function(){say("Report copied.");});}else{say("Clipboard unavailable.");}});
 $("btnDownload").addEventListener("click",function(){var b=new Blob([lastReport],{type:"text/markdown"});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="ada-audit-report.md";a.click();say("Report downloaded.");});
+var shareBtn=$("btnShareCopy");if(shareBtn){shareBtn.addEventListener("click",function(){var link="https://indigenousj.github.io/ADA/";if(navigator.clipboard){navigator.clipboard.writeText(link).then(function(){say("Link copied. Paste it anywhere to share.");});}else{say("Copy this link: "+link);}});}
 document.querySelectorAll('input[name=level],input[name=sev]').forEach(function(r){r.addEventListener("change",markDirty);});
 $("chkPassed").addEventListener("change",markDirty);
 $("btnApply").addEventListener("click",function(){if($("htmlInput").value)render(audit($("htmlInput").value));});

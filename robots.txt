@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://indigenousj.github.io/ADA/sitemap.xml
