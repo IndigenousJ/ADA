@@ -1,6 +1,6 @@
 # ADA Auditor  Free WCAG 2.2 AAA Checker
 
-Paste a URL or HTML source. Get 40 static findings for WCAG 2.2 A, AA and AAA with plain-language fixes.
+Paste a URL or HTML source. Get 43 static findings for WCAG 2.2 A, AA and AAA with plain-language fixes.
 
 Live demo: https://indigenousj.github.io/ADA/ (enable Pages on `main` / root)
 

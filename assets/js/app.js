@@ -35,8 +35,8 @@ push("lang","html lang attribute","3.1.1","A","P0",langOk,langOk?0:1,[],"Use htm
 var titleOk=doc?!!(doc.querySelector("title")&&doc.querySelector("title").textContent.trim()):/<title>[^<]+<\/title>/i.test(html);
 push("title","Descriptive page title","2.4.2","A","P1",titleOk,titleOk?0:1,[],"Set unique title per view.");
 var imgs=doc?doc.querySelectorAll("img"):[];var badImg=0,evImg=[];
-Array.prototype.forEach.call(imgs,function(im){var a=im.getAttribute("alt");if(a===null||/^(preview|image|photo)$/i.test(a||"")){badImg++;if(evImg.length<6)evImg.push(esc(im.outerHTML.slice(0,160)));}});
-push("alt","Image alt, meaningful","1.1.1","A","P0",badImg===0,badImg,evImg,"Sync alt from library. Never alt=Preview.");
+Array.prototype.forEach.call(imgs,function(im){var a=im.getAttribute("alt");if(a===null||/^(preview|image|photo|logo|spacer|blank|icon|picture)$/i.test(a||"")){badImg++;if(evImg.length<6)evImg.push(esc(im.outerHTML.slice(0,160)));}});
+push("alt","Image alt, meaningful","1.1.1","A","P0",badImg===0,badImg,evImg,"Sync alt from library. Never alt=preview, image, logo, etc.");
 var btns=doc?doc.querySelectorAll("button"):[];var badBtn=0,evBtn=[];
 Array.prototype.forEach.call(btns,function(b){if(!(b.getAttribute("aria-label")||b.textContent||"").trim()){badBtn++;if(evBtn.length<6)evBtn.push(esc(b.outerHTML.slice(0,160)));}});
 push("btn-name","Buttons have names","4.1.2","A","P0",badBtn===0,badBtn,evBtn,"Add aria-label + aria-expanded/pressed.");
@@ -90,6 +90,15 @@ Array.prototype.forEach.call(headEls,function(h){if(!(h.textContent||"").trim()&
 push("empty-heading","Headings have text","1.3.1","A","P1",badEmp===0,badEmp,evEmp,"Give every heading visible or labelled text.");
 var idEls=doc?Array.prototype.map.call(doc.querySelectorAll("[id]"),function(e){return e.id;}):[];var seenId={},dupIds=[];idEls.forEach(function(v){if(seenId[v]){if(dupIds.indexOf(v)<0)dupIds.push(v);}else{seenId[v]=1;}});
 push("dup-id","Ids are unique","1.3.1","A","P2",dupIds.length===0,dupIds.length,dupIds.slice(0,8),"Make every id unique. Labels and aria-labelledby depend on it.");
+var metas=doc?doc.querySelectorAll('meta[name="viewport"]'):[];var badZ=0,evZ=[];
+Array.prototype.forEach.call(metas,function(m){var c=(m.getAttribute("content")||"").toLowerCase();if(c.indexOf("user-scalable=no")>-1||c.indexOf("maximum-scale=1")>-1||c.indexOf("maximum-scale=0")>-1){badZ++;if(evZ.length<6)evZ.push(esc(m.outerHTML.slice(0,140)));}});
+push("viewport-zoom","Zoom not disabled","1.4.4","AA","P1",badZ===0,badZ,evZ,"Remove user-scalable=no and maximum-scale=1 from viewport meta.");
+var mbEls=doc?doc.querySelectorAll("marquee,blink"):[];var badMb=0,evMb=[];
+Array.prototype.forEach.call(mbEls,function(el){badMb++;if(evMb.length<6)evMb.push(esc(el.outerHTML.slice(0,140)));});
+push("marquee-blink","No marquee or blink","2.2.2","A","P1",badMb===0,badMb,evMb,"Remove marquee and blink elements.");
+var fsEls=doc?doc.querySelectorAll("fieldset"):[];var badFs=0,evFs=[];
+Array.prototype.forEach.call(fsEls,function(el){if(!el.querySelector("legend")||!(el.querySelector("legend").textContent||"").trim()){badFs++;if(evFs.length<6)evFs.push(esc(el.outerHTML.slice(0,140)));}});
+push("fieldset-legend","Fieldsets have legends","1.3.1","A","P1",badFs===0,badFs,evFs,"Add a non-empty legend to every fieldset.");
 var mainCnt=doc?doc.querySelectorAll("main,[role=main]").length:(html.match(/<main[\s>]/gi)||[]).length;
 push("landmark","One main landmark","1.3.1","A","P2",mainCnt===1,mainCnt,["main landmarks="+mainCnt],"Wrap main content in one main element.");
 var fldEls=doc?doc.querySelectorAll("input,select,textarea"):[];var badFld=0,evFld=[];
