@@ -19,7 +19,7 @@ function setStep(n){[["step1",1],["step2",2],["step3",3]].forEach(function(p){va
 try{var savedTheme=localStorage.getItem("ada-theme");if(savedTheme){document.body.setAttribute("data-theme",savedTheme);}var ts=$("themeSelect");if(ts&&savedTheme)ts.value=savedTheme;}catch(e){}
 var ts=$("themeSelect");if(ts){ts.addEventListener("change",function(){var v=ts.value;if(v==="default"){document.body.removeAttribute("data-theme");}else{document.body.setAttribute("data-theme",v);}try{localStorage.setItem("ada-theme",v);}catch(e){}say("Appearance set.");});}
 function findAll(re,src){var out=[],m;re=new RegExp(re.source,re.flags.indexOf("g")>-1?re.flags:re.flags+"g");while((m=re.exec(src))){var line=(src.substring(0,m.index).match(/\n/g)||[]).length+1;out.push("Line "+line+": "+m[0]);if(out.length>=8)break;}return out;}
-function audit(html){
+function audit(html){ return new Promise(function(resolve) {
 var doc;try{doc=new DOMParser().parseFromString(html,"text/html");}catch(e){doc=null;}
 var F=[];function fmt(el){var h=el.outerHTML;if(!h)return "";var raw=h.replace(/></g,"> <");var idx=html.indexOf(raw.substring(0,20));if(idx<0)idx=html.indexOf("<"+el.tagName.toLowerCase());var line=idx>-1?(html.substring(0,idx).match(/\n/g)||[]).length+1:"?";return "Line "+line+": "+h.slice(0,200);}
 function push(id,title,sc,level,sev,ok,count,ev,fix){F.push({id:id,title:title,sc:sc,level:level,sev:sev,ok:ok,count:count,ev:ev||[],fix:fix});}
@@ -123,7 +123,50 @@ push("video-captions","Videos have captions","1.2.2","A","P1",badVid===0,badVid,
 var ahEls=doc?doc.querySelectorAll('[aria-hidden="true"]'):[];var badAh=0,evAh=[];
 Array.prototype.forEach.call(ahEls,function(el){var f=el.querySelectorAll("a[href],button,input,select,textarea,[tabindex]");var vis=Array.prototype.filter.call(f,function(c){return !c.closest("[hidden],.d-none,.modal:not(.show),.offcanvas:not(.show),.collapse:not(.show)");});if(vis.length){badAh+=vis.length;if(evAh.length<6)evAh.push(esc(fmt(vis[0])));}});
 push("aria-hidden-focus","No focusable content in aria-hidden","1.3.1","A","P1",badAh===0,badAh,evAh,"Remove aria-hidden from containers with focusable controls, or move the controls out.");
-return F;}
+
+  if (typeof axe === 'undefined') {
+    resolve(F);
+    return;
+  }
+
+
+
+
+
+
+
+
+  // Wait a moment for DOM to settle, then run axe
+  setTimeout(function() {
+    axe.run(doc || document.createElement('div'), {
+      runOnly: { type: 'tag', values: ['wcag2a', 'wcag2aa', 'wcag2aaa', 'wcag21a', 'wcag21aa', 'wcag22a', 'wcag22aa'] }
+    }).then(function(results) {
+      results.violations.forEach(function(v) {
+        // Map Axe violation to our format
+        var id = "axe-" + v.id;
+        var title = "[Axe] " + v.help;
+        var ev = [];
+        var count = v.nodes.length;
+        var sev = (v.impact === "critical" || v.impact === "serious") ? "P0" : "P1";
+
+        v.nodes.forEach(function(node) {
+          if (ev.length < 6) {
+            ev.push(node.failureSummary + "\nTarget: " + node.target.join(","));
+          }
+        });
+
+        push(id, title, "Axe", "A", sev, false, count, ev, v.description + " (" + v.helpUrl + ")");
+      });
+
+      resolve(F);
+    }).catch(function(err) {
+      console.error(err);
+
+      resolve(F);
+    });
+  }, 100);
+}); }
+
 function render(F){
 var list=F.filter(function(f){return passLvl(f)&&passSev(f);});
 var showP=$("chkPassed").checked;
@@ -163,12 +206,12 @@ if(r.status===404)throw new Error("page not found (404). Check the address for t
 if(r.status===403)throw new Error("forbidden (403). The page may need a login.");
 if(r.status>=500)throw new Error("server error ("+r.status+"). Try again later.");
 if(!r.ok)throw new Error("HTTP "+r.status+".");
-return r.text();}).then(function(t){$("htmlInput").value=t;setTab("html");say("Fetched "+Math.round(t.length/1024)+" KB.");render(audit(t));}).catch(function(e){var m=String(e&&e.message||e);
+return r.text();}).then(function(t){$("htmlInput").value=t;setTab("html");say("Fetched "+Math.round(t.length/1024)+" KB.");audit(t).then(render);}).catch(function(e){var m=String(e&&e.message||e);
 if(m.indexOf("Failed to fetch")>-1||m.indexOf("NetworkError")>-1){showErr("Fetch blocked by CORS or network ("+u+"). View Source (Ctrl+U), copy, and use Paste HTML.");say("Fetch blocked.");}
 else{showErr("Fetch failed: "+m+" Tip: View Source (Ctrl+U), copy, and use Paste HTML.");say("Fetch failed.");}});
 return;}
 var h=currentHTML();if(!h.trim()){showErr("Paste HTML first.");return;}
-render(audit(h));});
+audit(h).then(render);});
 $("btnClear").addEventListener("click",function(){
 var doClear=function(){var saved=$("htmlInput").value;$("htmlInput").value="";$("urlInput").value="";$("resBody").innerHTML='<tr><td colspan="6" class=text-secondary>No audit yet.</td></tr>';$("detailList").innerHTML="";$("summaryCards").innerHTML="";lastReport="";$("btnCopy").disabled=true;$("btnDownload").disabled=true;$("btnApply").disabled=true;clearErr();setStep(1);say("Cleared. Your last input is saved for Undo.");var u=document.createElement("button");u.type="button";u.className="btn btn-warning mt-2";u.textContent="Undo clear (restore input)";u.addEventListener("click",function(){$("htmlInput").value=saved;u.remove();say("Input restored.");$("htmlInput").focus();});$("fetchStatus").appendChild(u);$("htmlInput").focus();};
 askConfirm("Clear all input and results?","This removes your pasted HTML, URL, and results. You can undo right after.","Yes, clear all",doClear);});
@@ -177,5 +220,5 @@ $("btnDownload").addEventListener("click",function(){var b=new Blob([lastReport]
 var shareBtn=$("btnShareCopy");if(shareBtn){shareBtn.addEventListener("click",function(){var link="https://indigenousj.github.io/ADA/";if(navigator.clipboard){navigator.clipboard.writeText(link).then(function(){say("Link copied. Paste it anywhere to share.");});}else{say("Copy this link: "+link);}});}
 document.querySelectorAll('input[name=level],input[name=sev]').forEach(function(r){r.addEventListener("change",markDirty);});
 $("chkPassed").addEventListener("change",markDirty);
-$("btnApply").addEventListener("click",function(){if($("htmlInput").value)render(audit($("htmlInput").value));});
+$("btnApply").addEventListener("click",function(){if($("htmlInput").value)audit($("htmlInput").value).then(render);});
 })();
