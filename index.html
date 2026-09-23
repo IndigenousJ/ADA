@@ -55,7 +55,7 @@
 <div id="pHtml" role="tabpanel" aria-labelledby="tbHtml" tabindex="0">
 <label class="form-label fw-bold" for="htmlInput">HTML source to audit</label>
 <textarea id="htmlInput" class="form-control" rows="7" placeholder="Paste full page source here" aria-describedby="htmlHelp" autofocus></textarea>
-<div id="htmlHelp" class="form-text">View Source (Ctrl+U), copy all, paste here. Nothing leaves your browser.</div>
+<div id="htmlHelp" class="form-text">Right click on the page you want to test and click "View Page Source". Copy everything and paste it here. Nothing leaves your browser.</div>
 </div>
 <div id="pUrl" role="tabpanel" aria-labelledby="tbUrl" tabindex="0" hidden>
 <label class="form-label fw-bold" for="urlInput">Page URL to fetch</label>
@@ -120,7 +120,7 @@
 <h2 id="hSeo" class="h4">How to check your site for ADA and WCAG 2.2 compliance</h2>
 <p class="text-secondary">Three steps, about two minutes per page. It works for ADA (Titles II and III), Section 508, and the European Accessibility Act, because they all reference WCAG.</p>
 <ol class="text-secondary">
-<li>Open View Source on the page (Ctrl+U), copy everything, and paste it above. Or let the tool fetch a URL that allows it.</li>
+<li>Right click on the page you want to test and select "View Page Source", copy everything, and paste it in the box above. Or let the tool fetch a URL that allows it.</li>
 <li>Run the audit. Every finding shows the exact WCAG number, the level, and a plain-language fix.</li>
 <li>Fix P0 blockers first, then P1, then P2. Re-run until the report is clean.</li>
 </ol>
@@ -148,9 +148,9 @@
 <dt class="col-sm-3"><dfn id="d-wcag">WCAG</dfn></dt><dd class="col-sm-9">Web Content Accessibility Guidelines. The world-wide test for usable web pages. A is basic, AA is the law in most places, AAA is the highest.</dd>
 <dt class="col-sm-3"><dfn id="d-sr">Screen reader</dfn></dt><dd class="col-sm-9">Software that reads the page out loud, like NVDA, JAWS, or VoiceOver. It needs names for buttons, labels for inputs, and alt text for images.</dd>
 <dt class="col-sm-3"><dfn id="d-alt">Alt text</dfn></dt><dd class="col-sm-9">Short text that stands in for an image. Example: alt="Team photo, four people smiling". Never use "image" or "preview".</dd>
-<dt class="col-sm-3"><dfn id="d-cors">CORS</dfn></dt><dd class="col-sm-9">Cross-Origin Resource Sharing. A browser safety rule that may block Fetch URL. Fix: copy page source and use Paste HTML.</dd>
+<dt class="col-sm-3"><dfn id="d-cors">CORS</dfn></dt><dd class="col-sm-9">Cross-Origin Resource Sharing. A browser safety rule that may block Fetch URL. What you need to do: copy page source and use Paste HTML.</dd>
 <dt class="col-sm-3"><dfn id="d-focus">Focus indicator</dfn></dt><dd class="col-sm-9">The thick outline that shows where the keyboard is. This tool uses a 3 pixel dark-blue outline.</dd>
-<dt class="col-sm-3"><dfn id="d-p0">P0 blocker</dfn></dt><dd class="col-sm-9">A fail that blocks disabled users. Fix P0 first, then P1, then P2.</dd>
+<dt class="col-sm-3"><dfn id="d-p0">P0 blocker</dfn></dt><dd class="col-sm-9">A fail that blocks disabled users. What you need to do: fix P0 first, then P1, then P2.</dd>
 </dl>
 <details><summary>Help with Level, Severity, and Show passed</summary>
 <p><strong>Minimum level:</strong> A plus AA plus AAA shows all checks. AA plus AAA hides basic A checks. AAA only shows the hardest checks.</p>
@@ -158,7 +158,7 @@
 <p><strong>Show passed:</strong> on shows green PASS rows too. Off shows fails only. Changes apply only after Apply filters.</p>
 </details>
 <details><summary>Help when Fetch URL fails</summary>
-<p>Open the page, press Ctrl plus U (View Source), press Ctrl plus A then Ctrl plus C, return here, press Ctrl plus V into HTML source, then Run audit.</p>
+<p>What you need to do: Open the page you want to test in a new tab. Right click and select "View Page Source". Select all the text and copy it. Then, come back here, click "Paste HTML", and paste the copied text into the box.</p>
 </details>
 </section>
 </main>
