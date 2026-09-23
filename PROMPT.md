@@ -4,7 +4,7 @@ Paste this into an AI coding agent to brief it on this project.
 
 ## What this is
 A free, single-page, **static** browser tool that audits pasted HTML (or a fetched URL) against
-**40 static WCAG 2.2 A/AA/AAA checks** and reports findings with plain-language fixes.
+**43 static WCAG 2.2 A/AA/AAA checks** and reports findings with plain-language fixes.
 Runs 100% client-side: no backend, no signup, no data leaves the page.
 
 - Repo: https://github.com/IndigenousJ/ADA  (branch `main`)
